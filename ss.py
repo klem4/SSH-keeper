@@ -15,10 +15,13 @@ class SSMemory(object):
 
     def ensure_table(self):
         self.conn.execute(
-            "CREATE TABLE IF NOT EXISTS %s ("
-            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "connection_data TEXT NOT NULL"
-            ")" % self.tb_name)
+            """
+            CREATE TABLE IF NOT EXISTS %s
+            (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              connection_data TEXT NOT NULL
+            )
+            """ % self.tb_name)
 
     def get_candidates(self):
         c = self.conn.cursor()
