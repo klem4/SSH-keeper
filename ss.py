@@ -53,7 +53,8 @@ class SSChooser(object):
         os.system('ssh %s' % connection_data)
 
     def render_candidates(self):
-        return
+        for i, c in enumerate(self.candidates):
+            print("%d). %s" % (i + 1, c[0]))
 
 
 def validated_input(text, validate_func=None, choices=None):
@@ -61,9 +62,8 @@ def validated_input(text, validate_func=None, choices=None):
 
 
 if __name__ == '__main__':
-    # FIXME: credentails - перенаименовать
     parser = argparse.ArgumentParser()
-    parser.add_argument('credentails')
+    parser.add_argument('credentails', default='', nargs='?')
     args = parser.parse_args()
     credentails = args.credentails
 
