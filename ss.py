@@ -4,13 +4,13 @@ import os
 import argparse
 import sqlite3
 
-x = credentails
 
 class SSMemory(object):
     # FIXME: вынести в settings и запилить configure
     db_name = 'ss.db'
     tb_name = 'ss_hosts'
 
+    # noinspection PyShadowingNames
     def __init__(self, credentails):
         self.credentails = credentails
         self.conn = sqlite3.connect(self.db_name)
@@ -36,7 +36,6 @@ class SSMemory(object):
         sql = "SELECT connection_data cd FROM %s WHERE cd LIKE ?" % self.tb_name
         c.execute(sql, ['%%%s%%' % self.credentails])
         return c.fetchall()
-
 
 
 class SSChooser(object):
