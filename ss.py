@@ -62,6 +62,7 @@ def validated_input(text, validate_func=None, choices=None):
 
 
 if __name__ == '__main__':
+    # FIXME: поддержка description вторым параметром
     parser = argparse.ArgumentParser()
     parser.add_argument('credentails', default='', nargs='?')
     args = parser.parse_args()
