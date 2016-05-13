@@ -13,6 +13,9 @@ class SSMemory(object):
         self.conn = sqlite3.connect(self.db_name)
         self.ensure_table()
 
+    def add(self, value):
+        pass
+
     def ensure_table(self):
         self.conn.execute(
             """
@@ -36,8 +39,12 @@ class SSMemory(object):
 
 class SSChooser(object):
     def __init__(self, name_or_part):
+        self.part_or_name = name_or_part
         self.mem = SSMemory(name_or_part)
         self.candidates = self.mem.get_candidates()
+
+    def save(self):
+        self.mem.add(self.part_or_name)
 
     def render_candidates(self):
         return
