@@ -26,17 +26,25 @@ class SSMemory(object):
     def get_candidates(self):
         c = self.conn.cursor()
         c.execute(
-            "SELECT connection_data cd FROM %s WHERE cd LIKE ?" %
-            self.tb_name, ("'%%%s%%'" % self.name_or_part,))
+            """
+            SELECT connection_data cd FROM %s
+            WHERE cd LIKE ?
+            ORDER BY connection_data DESC
+            """ % self.tb_name, ("'%%%s%%'" % self.name_or_part,))
+        return c.fetchall()
 
 
 class SSChooser(object):
     def __init__(self, name_or_part):
         self.mem = SSMemory(name_or_part)
+        self.candidates = self.mem.get_candidates()
 
     def render_candidates(self):
-        candidates = self.mem.get_candidates()
         return
+
+
+def validated_input(text, validate_func=None, choices=None):
+    pass
 
 
 if __name__ == '__main__':
@@ -46,4 +54,12 @@ if __name__ == '__main__':
     name_or_part = args.name_or_part
 
     chooser = SSChooser(name_or_part)
-    chooser.render_candidates()
+    if chooser.candidates:
+        chooser.render_candidates()
+        choose = raw_input("choose: ")
+    else:
+        if raw_input(
+            "No candidates found for %s, "
+            "save and connect ? [y/N] " % name_or_part) == 'y':
+            chooser.save()
+            chooser.connect()
