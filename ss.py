@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import os
 import argparse
 import sqlite3
 
@@ -14,7 +15,9 @@ class SSMemory(object):
         self.ensure_table()
 
     def add(self, value):
-        pass
+        self.conn.execute(
+            "INSERT INTO %s VALUES(NULL, ?)" % self.tb_name, [value])
+        self.conn.commit()
 
     def ensure_table(self):
         self.conn.execute(
@@ -22,19 +25,16 @@ class SSMemory(object):
             CREATE TABLE IF NOT EXISTS %s
             (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
-              connection_data TEXT NOT NULL
+              connection_data TEXT UNIQUE  NOT NULL
             )
             """ % self.tb_name)
 
     def get_candidates(self):
         c = self.conn.cursor()
-        c.execute(
-            """
-            SELECT connection_data cd FROM %s
-            WHERE cd LIKE ?
-            ORDER BY connection_data DESC
-            """ % self.tb_name, ("'%%%s%%'" % self.name_or_part,))
+        sql = "SELECT connection_data cd FROM %s WHERE cd LIKE ?" % self.tb_name
+        c.execute(sql, ['%%%s%%' % self.name_or_part])
         return c.fetchall()
+
 
 
 class SSChooser(object):
@@ -46,6 +46,11 @@ class SSChooser(object):
     def save(self):
         self.mem.add(self.part_or_name)
 
+    def connect(self, connection_data=None):
+        connection_data = self.part_or_name if connection_data is None \
+            else connection_data
+        os.system('ssh %s' % connection_data)
+
     def render_candidates(self):
         return
 
@@ -55,6 +60,7 @@ def validated_input(text, validate_func=None, choices=None):
 
 
 if __name__ == '__main__':
+    # FIXME: name_or_part - перенаименовать
     parser = argparse.ArgumentParser()
     parser.add_argument('name_or_part')
     args = parser.parse_args()
