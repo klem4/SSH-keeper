@@ -57,9 +57,22 @@ class SSChooser(object):
             print("%d). %s" % (i + 1, c[0]))
 
 
-def validated_input(text, validate_func=None, choices=None):
-    pass
+def parse_int(value, choices=[]):
+    try:
+        value = int(value)
+        if not choices or value in choices:
+            return value
+    except:
+        pass
 
+
+def validated_input(text, validate_func=None, *args, **kwargs):
+    while True:
+        result = validate_func(raw_input(text), *args, **kwargs)
+        if result is not None:
+            return result
+        else:
+            print("Wrong input")
 
 if __name__ == '__main__':
     # FIXME: поддержка description вторым параметром
@@ -71,7 +84,8 @@ if __name__ == '__main__':
     chooser = SSChooser(credentails)
     if chooser.candidates:
         chooser.render_candidates()
-        choose = raw_input("choose: ")
+        choose = validated_input(
+            "choose: ", parse_int, choices=range(1, len(chooser.candidates) + 1))
     else:
         if raw_input(
             "No candidates found for %s, "
