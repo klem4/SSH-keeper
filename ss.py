@@ -86,6 +86,7 @@ if __name__ == '__main__':
         chooser.render_candidates()
         choose = validated_input(
             "choose: ", parse_int, choices=range(1, len(chooser.candidates) + 1))
+        chooser.connect(choose)
     else:
         if raw_input(
             "No candidates found for %s, "
