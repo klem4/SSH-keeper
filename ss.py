@@ -18,7 +18,7 @@ class SSMemory(object):
 
     def add(self, value):
         self.conn.execute(
-            "INSERT INTO %s VALUES(NULL, ?)" % self.tb_name, [value])
+            "INSERT OR IGNORE INTO %s VALUES(NULL, ?)" % self.tb_name, [value])
         self.conn.commit()
 
     def ensure_table(self):
