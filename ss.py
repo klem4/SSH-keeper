@@ -4,13 +4,15 @@ import os
 import argparse
 import sqlite3
 
+x = credentails
 
 class SSMemory(object):
+    # FIXME: вынести в settings и запилить configure
     db_name = 'ss.db'
     tb_name = 'ss_hosts'
 
-    def __init__(self, name_or_part):
-        self.name_or_part = name_or_part
+    def __init__(self, credentails):
+        self.credentails = credentails
         self.conn = sqlite3.connect(self.db_name)
         self.ensure_table()
 
@@ -32,15 +34,15 @@ class SSMemory(object):
     def get_candidates(self):
         c = self.conn.cursor()
         sql = "SELECT connection_data cd FROM %s WHERE cd LIKE ?" % self.tb_name
-        c.execute(sql, ['%%%s%%' % self.name_or_part])
+        c.execute(sql, ['%%%s%%' % self.credentails])
         return c.fetchall()
 
 
 
 class SSChooser(object):
-    def __init__(self, name_or_part):
-        self.part_or_name = name_or_part
-        self.mem = SSMemory(name_or_part)
+    def __init__(self, credentails):
+        self.part_or_name = credentails
+        self.mem = SSMemory(credentails)
         self.candidates = self.mem.get_candidates()
 
     def save(self):
@@ -60,19 +62,19 @@ def validated_input(text, validate_func=None, choices=None):
 
 
 if __name__ == '__main__':
-    # FIXME: name_or_part - перенаименовать
+    # FIXME: credentails - перенаименовать
     parser = argparse.ArgumentParser()
-    parser.add_argument('name_or_part')
+    parser.add_argument('credentails')
     args = parser.parse_args()
-    name_or_part = args.name_or_part
+    credentails = args.credentails
 
-    chooser = SSChooser(name_or_part)
+    chooser = SSChooser(credentails)
     if chooser.candidates:
         chooser.render_candidates()
         choose = raw_input("choose: ")
     else:
         if raw_input(
             "No candidates found for %s, "
-            "save and connect ? [y/N] " % name_or_part) == 'y':
+            "save and connect ? [y/N] " % credentails) == 'y':
             chooser.save()
             chooser.connect()
