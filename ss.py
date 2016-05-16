@@ -36,7 +36,7 @@ class SSMemory(object):
     def get_candidates(self):
         c = self.conn.cursor()
         sql = """
-        SELECT connection_data cd FROM %s WHERE cd LIKE ? """ % self.tb_name
+        SELECT connection_data cd FROM %s WHERE cd LIKE ? ORDER BY cd""" % self.tb_name
         c.execute(sql, ['%%%s%%' % self.connection_data])
         return c.fetchall()
 
@@ -93,8 +93,6 @@ if __name__ == '__main__':
         choose = chooser.candidates[choose - 1]
         chooser.connect(choose)
     else:
-        if raw_input(
-            "No candidates found for %s, "
-            "save and connect ? [y/N] " % cd) == 'y':
+        if raw_input("No candidates found for %s, save and connect ? [y/N] " % cd) == 'y':
             chooser.save()
             chooser.connect()
