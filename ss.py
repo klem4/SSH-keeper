@@ -1,8 +1,11 @@
+#!/usr/bin/env python
 # coding: utf-8
 
 import os
-import argparse
+import sys
+import signal
 import sqlite3
+import argparse
 
 
 # noinspection PyShadowingNames
@@ -76,6 +79,14 @@ def validated_input(text, validate_func=None, *args, **kwargs):
             return result
         else:
             print("Wrong input")
+
+
+# noinspection PyUnusedLocal
+def sigint_handler(_signal, frame):
+    print("\nBye!")
+    sys.exit(0)
+signal.signal(signal.SIGINT, sigint_handler)
+
 
 if __name__ == '__main__':
     # FIXME: поддержка description вторым параметром
