@@ -8,6 +8,17 @@ import sqlite3
 import argparse
 
 
+OKGREEN = '\033[92m'
+WARNING = '\033[93m'
+ENDC = '\033[0m'
+
+
+def out(text, clr=None):
+    if clr:
+        text = '%s%s%s' % (clr, text, ENDC)
+    print(text)
+
+
 # noinspection PyShadowingNames
 class SSMemory(object):
     # FIXME: вынести в settings и запилить configure
@@ -69,7 +80,7 @@ class SSChooser(object):
 
     def render_candidates(self):
         for i, c in enumerate(self.candidates):
-            print("%d). %s" % (i + 1, c[1]))
+            out("%d). %s" % (i + 1, c[1]), BOLD)
 
 
 def parse_int(value, choices=None):
@@ -87,12 +98,12 @@ def validated_input(text, validate_func=None, *args, **kwargs):
         if result is not None:
             return result
         else:
-            print("Wrong input")
+            out("Wrong input", WARNING)
 
 
 # noinspection PyUnusedLocal
 def sigint_handler(_signal, frame):
-    print("\nBye!")
+    out("\nBye!", OKGREEN)
     sys.exit(0)
 signal.signal(signal.SIGINT, sigint_handler)
 
@@ -109,7 +120,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.delete_mode:
-        print("* Delete mode!")
+        out("* Delete mode!", WARNING)
 
     ui = args.user_input
 
