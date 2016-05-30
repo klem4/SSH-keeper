@@ -25,6 +25,11 @@ class SSMemory(object):
             [connection_data, description])
         self.conn.commit()
 
+    def delete(self, pk):
+        self.conn.execute(
+            "DELETE FROM %s WHERE id = ? LIMIT 1" % self.tb_name, [pk])
+        self.conn.commit()
+
     def ensure_table(self):
         self.conn.execute(
             """
@@ -39,7 +44,8 @@ class SSMemory(object):
     def get_candidates(self):
         c = self.conn.cursor()
         sql = """
-        SELECT connection_data cd FROM %s WHERE cd LIKE ? ORDER BY cd""" % self.tb_name
+        SELECT id, connection_data cd FROM %s WHERE cd LIKE ? ORDER BY cd""" % (
+            self.tb_name)
         c.execute(sql, ['%%%s%%' % self.connection_data])
         return c.fetchall()
 
@@ -53,14 +59,17 @@ class SSChooser(object):
     def save(self):
         self.mem.add(self.part_or_name)
 
-    def connect(self, connection_data=None):
-        connection_data = self.part_or_name if connection_data is None \
-            else connection_data
+    def delete(self, choose):
+        self.mem.delete(choose[0])
+
+    def connect(self, choose=None):
+        connection_data = self.part_or_name if choose is None \
+            else choose[1]
         os.system('ssh %s' % connection_data)
 
     def render_candidates(self):
         for i, c in enumerate(self.candidates):
-            print("%d). %s" % (i + 1, c[0]))
+            print("%d). %s" % (i + 1, c[1]))
 
 
 def parse_int(value, choices=None):
@@ -89,28 +98,39 @@ signal.signal(signal.SIGINT, sigint_handler)
 
 
 if __name__ == '__main__':
-    # FIXME: поддержка description вторым параметром
-    # FIXME: поддержка delete и list ?
-    # FIXME: quite ctrl+c
+    # TODO: color prints
+    # TODO: поддержка description вторым параметром
+    # TODO: поддержка delete и list ?
+    # FIXME: help text for -h
     parser = argparse.ArgumentParser()
     parser.add_argument('connection_data', default='', nargs='?')
     parser.add_argument('-d', action='store_true', dest='delete_mode')
-    args = parser.parse_args()
-    cd = args.connection_data
 
-    chooser = SSChooser(cd)
-    if chooser.candidates:
-        chooser.render_candidates()
-        choose = validated_input(
-            "choose: ", parse_int, choices=range(1, len(chooser.candidates) + 1))
-
-        choose = chooser.candidates[choose - 1]
+    while True:
+        args = parser.parse_args()
 
         if args.delete_mode:
-            pass
+            print("Delete mode!")
+
+        cd = args.connection_data
+
+        chooser = SSChooser(cd)
+        if chooser.candidates:
+            chooser.render_candidates()
+            choose = validated_input(
+                "choose: ", parse_int, choices=range(1, len(chooser.candidates) + 1))
+
+            choose = chooser.candidates[choose - 1]
+
+            if args.delete_mode:
+                chooser.delete(choose)
+            else:
+                chooser.connect(choose)
         else:
-            chooser.connect(choose)
-    else:
-        if raw_input("No candidates found for %s, save and connect ? [y/N] " % cd) == 'y':
-            chooser.save()
-            chooser.connect()
+            if raw_input("No candidates found for %s, save and connect ? [y/N] " % cd) == 'y':
+                chooser.save()
+                chooser.connect()
+            else:
+                break
+
+        print("\n")
