@@ -80,8 +80,10 @@ def validated_input(text, validate_func=None, *args, **kwargs):
 if __name__ == '__main__':
     # FIXME: поддержка description вторым параметром
     # FIXME: поддержка delete и list ?
+    # FIXME: quite ctrl+c
     parser = argparse.ArgumentParser()
     parser.add_argument('connection_data', default='', nargs='?')
+    parser.add_argument('-d', action='store_true', dest='delete_mode')
     args = parser.parse_args()
     cd = args.connection_data
 
@@ -90,8 +92,13 @@ if __name__ == '__main__':
         chooser.render_candidates()
         choose = validated_input(
             "choose: ", parse_int, choices=range(1, len(chooser.candidates) + 1))
+
         choose = chooser.candidates[choose - 1]
-        chooser.connect(choose)
+
+        if args.delete_mode:
+            pass
+        else:
+            chooser.connect(choose)
     else:
         if raw_input("No candidates found for %s, save and connect ? [y/N] " % cd) == 'y':
             chooser.save()
