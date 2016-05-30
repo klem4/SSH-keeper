@@ -102,35 +102,33 @@ if __name__ == '__main__':
     # TODO: поддержка description вторым параметром
     # TODO: поддержка delete и list ?
     # FIXME: help text for -h
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('connection_data', default='', nargs='?')
+    parser.add_argument('user_input', default='', nargs='?')
     parser.add_argument('-d', action='store_true', dest='delete_mode')
 
-    while True:
-        args = parser.parse_args()
+    args = parser.parse_args()
+
+    if args.delete_mode:
+        print("* Delete mode!")
+
+    ui = args.user_input
+
+    chooser = SSChooser(ui)
+    if chooser.candidates:
+        chooser.render_candidates()
+        choose = validated_input(
+            "Choose: ", parse_int, choices=range(1, len(chooser.candidates) + 1))
+
+        choose = chooser.candidates[choose - 1]
 
         if args.delete_mode:
-            print("Delete mode!")
-
-        cd = args.connection_data
-
-        chooser = SSChooser(cd)
-        if chooser.candidates:
-            chooser.render_candidates()
-            choose = validated_input(
-                "choose: ", parse_int, choices=range(1, len(chooser.candidates) + 1))
-
-            choose = chooser.candidates[choose - 1]
-
-            if args.delete_mode:
-                chooser.delete(choose)
-            else:
-                chooser.connect(choose)
+            chooser.delete(choose)
         else:
-            if raw_input("No candidates found for %s, save and connect ? [y/N] " % cd) == 'y':
-                chooser.save()
-                chooser.connect()
-            else:
-                break
-
-        print("\n")
+            chooser.connect(choose)
+    else:
+        if not ui:
+            print("* Database is empty")
+        elif raw_input("* No candidates found for %s, save and connect ? [y/N] " % ui) == 'y':
+            chooser.save()
+            chooser.connect()
