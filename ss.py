@@ -100,7 +100,6 @@ signal.signal(signal.SIGINT, sigint_handler)
 if __name__ == '__main__':
     # TODO: color prints
     # TODO: поддержка description вторым параметром
-    # TODO: поддержка delete и list ?
     # FIXME: help text for -h
 
     parser = argparse.ArgumentParser()
