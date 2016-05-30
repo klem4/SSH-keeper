@@ -10,6 +10,7 @@ import argparse
 
 OKGREEN = '\033[92m'
 WARNING = '\033[93m'
+BOLD = '\033[1m'
 ENDC = '\033[0m'
 
 
@@ -109,7 +110,6 @@ signal.signal(signal.SIGINT, sigint_handler)
 
 
 if __name__ == '__main__':
-    # TODO: color prints
     # TODO: поддержка description вторым параметром
     # FIXME: help text for -h
 
