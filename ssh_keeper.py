@@ -22,7 +22,6 @@ def out(text, clr=None):
 
 # noinspection PyShadowingNames
 class SKMemory(object):
-    # FIXME: вынести в settings и запилить configure
     db_name = 'sk.db'
     tb_name = 'sk_hosts'
 
