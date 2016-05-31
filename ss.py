@@ -56,7 +56,8 @@ class SSMemory(object):
     def get_candidates(self):
         c = self.conn.cursor()
         sql = """
-        SELECT id, connection_data cd FROM %s WHERE cd LIKE ? ORDER BY cd""" % (
+        SELECT id, connection_data, description cd FROM %s
+        WHERE cd LIKE ? ORDER BY cd""" % (
             self.tb_name)
         c.execute(sql, ['%%%s%%' % self.connection_data])
         return c.fetchall()
@@ -68,8 +69,8 @@ class SSChooser(object):
         self.mem = SSMemory(connection_data)
         self.candidates = self.mem.get_candidates()
 
-    def save(self):
-        self.mem.add(self.part_or_name)
+    def save(self, description=''):
+        self.mem.add(self.part_or_name, description)
 
     def delete(self, choose):
         self.mem.delete(choose[0])
@@ -81,7 +82,10 @@ class SSChooser(object):
 
     def render_candidates(self):
         for i, c in enumerate(self.candidates):
-            out("%d). %s" % (i + 1, c[1]), BOLD)
+            msg = "%d). %s" % (i + 1, c[1])
+            if c[2]:
+                msg += '(%s)' % c[2]
+            out(msg, BOLD)
 
 
 def parse_int(value, choices=None):
@@ -140,5 +144,6 @@ if __name__ == '__main__':
         if not ui:
             print("* Database is empty")
         elif raw_input("* No candidates found for %s, save and connect ? [y/N] " % ui) == 'y':
-            chooser.save()
+            description = raw_input("Description(empty by default): ")
+            chooser.save(description=description)
             chooser.connect()
