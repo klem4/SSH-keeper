@@ -116,7 +116,6 @@ signal.signal(signal.SIGINT, sigint_handler)
 
 
 if __name__ == '__main__':
-    # FIXME: help text for -h
     parser = argparse.ArgumentParser()
     parser.add_argument('user_input', default='', nargs='?')
     parser.add_argument('-d', action='store_true', dest='delete_mode')
