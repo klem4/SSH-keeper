@@ -21,10 +21,10 @@ def out(text, clr=None):
 
 
 # noinspection PyShadowingNames
-class SSMemory(object):
+class SKMemory(object):
     # FIXME: вынести в settings и запилить configure
-    db_name = 'ss.db'
-    tb_name = 'ss_hosts'
+    db_name = '/tmp/sk.db'
+    tb_name = 'sk_hosts'
 
     def __init__(self, connection_data):
         self.connection_data = connection_data
@@ -63,10 +63,10 @@ class SSMemory(object):
         return c.fetchall()
 
 
-class SSChooser(object):
+class SKChooser(object):
     def __init__(self, connection_data):
         self.part_or_name = connection_data
-        self.mem = SSMemory(connection_data)
+        self.mem = SKMemory(connection_data)
         self.candidates = self.mem.get_candidates()
 
     def save(self, description=''):
@@ -115,7 +115,6 @@ signal.signal(signal.SIGINT, sigint_handler)
 
 if __name__ == '__main__':
     # FIXME: help text for -h
-
     parser = argparse.ArgumentParser()
     parser.add_argument('user_input', default='', nargs='?')
     parser.add_argument('-d', action='store_true', dest='delete_mode')
@@ -127,7 +126,7 @@ if __name__ == '__main__':
 
     ui = args.user_input
 
-    chooser = SSChooser(ui)
+    chooser = SKChooser(ui)
     if chooser.candidates:
         chooser.render_candidates()
         choose = validated_input(
