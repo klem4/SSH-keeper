@@ -63,6 +63,7 @@ class SKMemory(object):
         return c.fetchall()
 
 
+# noinspection PyShadowingNames
 class SKChooser(object):
     def __init__(self, connection_data):
         self.part_or_name = connection_data
@@ -97,6 +98,7 @@ def parse_int(value, choices=None):
         pass
 
 
+# noinspection PyShadowingNames
 def validated_input(text, validate_func=None, *args, **kwargs):
     while True:
         result = validate_func(raw_input(text), *args, **kwargs)
