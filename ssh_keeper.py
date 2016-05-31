@@ -23,12 +23,13 @@ def out(text, clr=None):
 # noinspection PyShadowingNames
 class SKMemory(object):
     # FIXME: вынести в settings и запилить configure
-    db_name = '/tmp/sk.db'
+    db_name = 'sk.db'
     tb_name = 'sk_hosts'
 
     def __init__(self, connection_data):
         self.connection_data = connection_data
-        self.conn = sqlite3.connect(self.db_name)
+        db_path = os.path.join(os.getenv('HOME'), self.db_name)
+        self.conn = sqlite3.connect(db_path)
         self.ensure_table()
 
     def add(self, connection_data, description=''):

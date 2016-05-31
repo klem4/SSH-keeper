@@ -1,5 +1,5 @@
 SCRIPT_NAME=ssh_keeper.py
-DATA_DIR=$(HOME).ssh_keeper
+DATA_DIR=$(HOME)/.ssh_keeper
 ALIAS_NAME=s
 BIN_DIR=/usr/local/bin/
 
