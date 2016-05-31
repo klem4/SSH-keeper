@@ -114,7 +114,6 @@ signal.signal(signal.SIGINT, sigint_handler)
 
 
 if __name__ == '__main__':
-    # TODO: поддержка description вторым параметром
     # FIXME: help text for -h
 
     parser = argparse.ArgumentParser()
