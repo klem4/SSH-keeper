@@ -55,11 +55,12 @@ class SKMemory(object):
 
     def get_candidates(self):
         c = self.conn.cursor()
+        pattern = '%%%s%%' % self.connection_data
         sql = """
-        SELECT id, connection_data, description cd FROM %s
-        WHERE cd LIKE ? ORDER BY cd""" % (
+        SELECT id, connection_data cd, description ds FROM %s
+        WHERE cd LIKE ? OR ds LIKE ? ORDER BY cd, ds""" % (
             self.tb_name)
-        c.execute(sql, ['%%%s%%' % self.connection_data])
+        c.execute(sql, [pattern, pattern])
         return c.fetchall()
 
 
