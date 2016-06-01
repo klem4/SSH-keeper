@@ -23,3 +23,6 @@ Then just type "s" for start using program.
 ![Search hosts](images/search1.png?raw=true "Search hosts")
 ![Search hosts](images/search2.png?raw=true "Search hosts")
 
+##### DELETE HOST
+![Delete hosts](images/delete.png?raw=true "Delete host")
+
