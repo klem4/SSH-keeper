@@ -19,12 +19,7 @@ Then just type "s" for start using program.
 ##### LISTING ALL HOSTS
 ![Listing hosts](images/list.png?raw=true "Listing hosts")
 
-##### SEARCH HOST BY PATTERN
-by part of description
+##### SEARCH HOST BY PATTERN(description or connection data)
 ![Search hosts](images/search1.png?raw=true "Search hosts")
-
-by part of connection information
 ![Search hosts](images/search2.png?raw=true "Search hosts")
-
-
 
