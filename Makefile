@@ -7,7 +7,11 @@ all: clean
 	mkdir -p $(DATA_DIR)
 	cp $(SCRIPT_NAME) $(DATA_DIR)
 	ln -s $(DATA_DIR)/$(SCRIPT_NAME) $(BIN_DIR)$(ALIAS_NAME)
-	chmod a+rx $(DATA_DIR)/$(SCRIPT_NAME) $(BIN_DIR)$(ALIAS_NAME)
+
+	chmod +x $(SCRIPT_NAME) $(BIN_DIR)$(ALIAS_NAME)
+	chown $(SUDO_USER) $(BIN_DIR)$(ALIAS_NAME)
+	chown -R $(SUDO_USER) $(DATA_DIR)
+
 	@echo "* Install done"
 clean:
 	rm -f $(BIN_DIR)$(ALIAS_NAME)

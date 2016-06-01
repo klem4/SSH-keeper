@@ -24,10 +24,12 @@ def out(text, clr=None):
 class SKMemory(object):
     db_name = 'sk.db'
     tb_name = 'sk_hosts'
+    data_dir = '.ssh_keeper'
 
     def __init__(self, connection_data):
         self.connection_data = connection_data
-        db_path = os.path.join(os.getenv('HOME'), self.db_name)
+        db_path = os.path.join(os.getenv('HOME'), self.data_dir, self.db_name)
+        print(db_path)
         self.conn = sqlite3.connect(db_path)
         self.ensure_table()
 
