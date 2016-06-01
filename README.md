@@ -13,3 +13,4 @@ Easy access to SSH connections.
 * `sudo make clean`
 
 ##### ADDING HOSTS
+![Adding hosts](images/add.png?raw=true "Adding hosts")
