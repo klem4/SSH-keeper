@@ -1,7 +1,8 @@
 # coding: utf-8
 
 import os
-import sqlite3 from unittest import TestCase
+import sqlite3
+from unittest import TestCase
 from ssh_keeper import SKChooser, SKMemory
 
 
