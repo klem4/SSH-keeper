@@ -1,6 +1,7 @@
 # SSH-keeper
 Easy access to SSH connections.
 
+[![Code Quality](https://scrutinizer-ci.com/g/klem4/SSH-keeper/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/klem4/SSH-keeper/?branch=master)
 
 ##### INSTALL
 * `cd /tmp`
