@@ -28,3 +28,7 @@ Then just type "s" for start using program.
 ##### DELETE HOST
 ![Delete hosts](images/delete.png?raw=true "Delete host")
 
+##### TODO
+ - unittests
+ - python2.6 support
+
