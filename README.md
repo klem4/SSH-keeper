@@ -6,12 +6,12 @@ Easy access to SSH connections.
 * `cd /tmp`
 * `git clone https://github.com/klem4/SSH-keeper.git`
 * `cd SSH-keeper/`
-* `sudo make`
+* `make`
 
 Then just type "s" for start using program.
 
 ##### UNINSTALL
-* `sudo make clean`
+* `make uninstall`
 
 ##### ADDING HOSTS
 ![Adding hosts](images/add.png?raw=true "Adding hosts")
