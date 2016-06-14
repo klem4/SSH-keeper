@@ -32,4 +32,4 @@ Then just type "s" for start using program.
  - unittests
  - python2.6 support
  - modify mode(-m) + instructions
-
+ - correct install on nix & os x
