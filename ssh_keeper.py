@@ -8,6 +8,12 @@ import sqlite3
 import argparse
 
 
+try:
+    _input = raw_input
+except:
+    _input = input
+
+
 OKGREEN = '\033[92m'
 WARNING = '\033[93m'
 BOLD = '\033[1m'
@@ -103,7 +109,7 @@ def parse_int(value, choices=None):
 # noinspection PyShadowingNames
 def validated_input(text, validate_func=None, *args, **kwargs):
     while True:
-        result = validate_func(raw_input(text), *args, **kwargs)
+        result = validate_func(_input(text), *args, **kwargs)
         if result is not None:
             return result
         else:
@@ -144,7 +150,7 @@ if __name__ == '__main__':
     else:
         if not ui:
             print("* Database is empty")
-        elif raw_input("* No candidates found for %s, save and connect ? [y/N] " % ui) == 'y':
-            description = raw_input("Description(empty by default): ")
+        elif _input("* No candidates found for %s, save and connect ? [y/N] " % ui) == 'y':
+            description = _input("Description(empty by default): ")
             chooser.save(description=description)
             chooser.connect()
