@@ -27,9 +27,3 @@ Then just type "s" for start using program.
 
 ##### DELETE HOST
 ![Delete hosts](images/delete.png?raw=true "Delete host")
-
-##### TODO
- - unittests
- - python2.6 support
- - modify mode(-m) + instructions
- - correct install on nix & os x
